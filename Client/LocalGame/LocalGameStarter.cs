@@ -131,23 +131,23 @@ namespace Client.LocalGame
             user.MapLocation = user.CurrentLocation; // 设置MapLocation
             user.Direction = (MirDirection)saveData.Direction;
 
-            // 属性
+            // 属性 - 通过 Stats 字典设置
             user.HP = (ushort)saveData.HP;
             user.MP = (ushort)saveData.MP;
-            user.MaxHP = (ushort)saveData.MaxHP;
-            user.MaxMP = (ushort)saveData.MaxMP;
-            user.MinAC = saveData.MinAC;
-            user.MaxAC = saveData.MaxAC;
-            user.MinMAC = saveData.MinMAC;
-            user.MaxMAC = saveData.MaxMAC;
-            user.MinDC = saveData.MinDC;
-            user.MaxDC = saveData.MaxDC;
-            user.MinMC = saveData.MinMC;
-            user.MaxMC = saveData.MaxMC;
-            user.MinSC = saveData.MinSC;
-            user.MaxSC = saveData.MaxSC;
-            user.Accuracy = saveData.Accuracy;
-            user.Agility = saveData.Agility;
+            user.Stats[Shared.Data.Stat.HP] = saveData.MaxHP;
+            user.Stats[Shared.Data.Stat.MP] = saveData.MaxMP;
+            user.Stats[Shared.Data.Stat.MinAC] = saveData.MinAC;
+            user.Stats[Shared.Data.Stat.MaxAC] = saveData.MaxAC;
+            user.Stats[Shared.Data.Stat.MinMAC] = saveData.MinMAC;
+            user.Stats[Shared.Data.Stat.MaxMAC] = saveData.MaxMAC;
+            user.Stats[Shared.Data.Stat.MinDC] = saveData.MinDC;
+            user.Stats[Shared.Data.Stat.MaxDC] = saveData.MaxDC;
+            user.Stats[Shared.Data.Stat.MinMC] = saveData.MinMC;
+            user.Stats[Shared.Data.Stat.MaxMC] = saveData.MaxMC;
+            user.Stats[Shared.Data.Stat.MinSC] = saveData.MinSC;
+            user.Stats[Shared.Data.Stat.MaxSC] = saveData.MaxSC;
+            user.Stats[Shared.Data.Stat.Accuracy] = saveData.Accuracy;
+            user.Stats[Shared.Data.Stat.Agility] = saveData.Agility;
 
             // 装备和物品
             // TODO: 加载装备和背包数据

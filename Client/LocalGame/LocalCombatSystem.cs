@@ -121,19 +121,19 @@ namespace Client.LocalGame
         /// </summary>
         private int CalculatePlayerDamage()
         {
-            // 获取玩家属性
-            ushort minDC = _player.MinDC;
-            ushort maxDC = _player.MaxDC;
+            // 获取玩家属性 - 从 Stats 字典读取
+            int minDC = _player.Stats[Shared.Data.Stat.MinDC];
+            int maxDC = _player.Stats[Shared.Data.Stat.MaxDC];
 
             // 确保有伤害范围
             if (maxDC <= minDC)
-                maxDC = (ushort)(minDC + 1);
+                maxDC = minDC + 1;
 
             // 随机伤害
             int baseDamage = LocalEnvir.Instance.Random.Next(minDC, maxDC + 1);
 
             // 考虑准确度
-            byte accuracy = _player.Accuracy;
+            int accuracy = _player.Stats[Shared.Data.Stat.Accuracy];
             // TODO: 考虑目标的敏捷
 
             // 随机浮动 (80% - 120%)
@@ -174,8 +174,10 @@ namespace Client.LocalGame
         /// </summary>
         private void DamagePlayer(UserObject player, int damage)
         {
-            // 计算玩家防御
-            int defense = (player.MinAC + player.MaxAC) / 2;
+            // 计算玩家防御 - 从 Stats 字典读取
+            int minAC = player.Stats[Shared.Data.Stat.MinAC];
+            int maxAC = player.Stats[Shared.Data.Stat.MaxAC];
+            int defense = (minAC + maxAC) / 2;
 
             // 计算最终伤害
             int actualDamage = Math.Max(1, damage - defense);

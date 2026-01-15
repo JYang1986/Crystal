@@ -66,13 +66,21 @@ namespace Client.LocalGame
         public void Process()
         {
             // GM模式：无限HP/MP
-            if (_infiniteHP && _userObject.HP < _userObject.MaxHP)
+            if (_infiniteHP)
             {
-                _userObject.HP = _userObject.MaxHP;
+                int maxHP = _userObject.Stats[Shared.Data.Stat.HP];
+                if (_userObject.HP < maxHP)
+                {
+                    _userObject.HP = maxHP;
+                }
             }
-            if (_infiniteMP && _userObject.MP < _userObject.MaxMP)
+            if (_infiniteMP)
             {
-                _userObject.MP = _userObject.MaxMP;
+                int maxMP = _userObject.Stats[Shared.Data.Stat.MP];
+                if (_userObject.MP < maxMP)
+                {
+                    _userObject.MP = maxMP;
+                }
             }
 
             // 更新战斗状态

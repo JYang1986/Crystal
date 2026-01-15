@@ -49,6 +49,9 @@ namespace Client.LocalGame
                 if (!Directory.Exists(SavePath))
                     Directory.CreateDirectory(SavePath);
 
+                // 获取 Stats 字典中的值
+                var stats = player.Stats;
+
                 var saveData = new CharacterSaveData
                 {
                     CharacterId = player.Name,
@@ -63,20 +66,20 @@ namespace Client.LocalGame
                     Hair = player.Hair,
                     HP = player.HP,
                     MP = player.MP,
-                    MaxHP = player.MaxHP,
-                    MaxMP = player.MaxMP,
-                    MinAC = player.MinAC,
-                    MaxAC = player.MaxAC,
-                    MinMAC = player.MinMAC,
-                    MaxMAC = player.MaxMAC,
-                    MinDC = player.MinDC,
-                    MaxDC = player.MaxDC,
-                    MinMC = player.MinMC,
-                    MaxMC = player.MaxMC,
-                    MinSC = player.MinSC,
-                    MaxSC = player.MaxSC,
-                    Accuracy = player.Accuracy,
-                    Agility = player.Agility,
+                    MaxHP = stats[Stat.HP],
+                    MaxMP = stats[Stat.MP],
+                    MinAC = stats[Stat.MinAC],
+                    MaxAC = stats[Stat.MaxAC],
+                    MinMAC = stats[Stat.MinMAC],
+                    MaxMAC = stats[Stat.MaxMAC],
+                    MinDC = stats[Stat.MinDC],
+                    MaxDC = stats[Stat.MaxDC],
+                    MinMC = stats[Stat.MinMC],
+                    MaxMC = stats[Stat.MaxMC],
+                    MinSC = stats[Stat.MinSC],
+                    MaxSC = stats[Stat.MaxSC],
+                    Accuracy = stats[Stat.Accuracy],
+                    Agility = stats[Stat.Agility],
 
                     // 装备
                     Equipment = player.Equipment,
@@ -258,18 +261,18 @@ namespace Client.LocalGame
         public int MP { get; set; }
         public int MaxHP { get; set; }
         public int MaxMP { get; set; }
-        public ushort MinAC { get; set; }
-        public ushort MaxAC { get; set; }
-        public ushort MinMAC { get; set; }
-        public ushort MaxMAC { get; set; }
-        public ushort MinDC { get; set; }
-        public ushort MaxDC { get; set; }
-        public ushort MinMC { get; set; }
-        public ushort MaxMC { get; set; }
-        public ushort MinSC { get; set; }
-        public ushort MaxSC { get; set; }
-        public byte Accuracy { get; set; }
-        public byte Agility { get; set; }
+        public int MinAC { get; set; }
+        public int MaxAC { get; set; }
+        public int MinMAC { get; set; }
+        public int MaxMAC { get; set; }
+        public int MinDC { get; set; }
+        public int MaxDC { get; set; }
+        public int MinMC { get; set; }
+        public int MaxMC { get; set; }
+        public int MinSC { get; set; }
+        public int MaxSC { get; set; }
+        public int Accuracy { get; set; }
+        public int Agility { get; set; }
 
         // 装备和物品（TODO: 定义具体的数据结构）
         public object Equipment { get; set; }
