@@ -312,8 +312,10 @@ namespace Client.LocalGame
 
         private void DamagePlayer(UserObject player, int damage)
         {
-            // 计算实际伤害（考虑防御）
-            int actualDamage = Math.Max(1, damage - (player.MinAC + player.MaxAC) / 2);
+            // 计算实际伤害（考虑防御） - 使用 Stats 字典
+            int minAC = player.Stats[Stat.MinAC];
+            int maxAC = player.Stats[Stat.MaxAC];
+            int actualDamage = Math.Max(1, damage - (minAC + maxAC) / 2);
 
             // 应用伤害
             player.HP = (ushort)Math.Max(0, player.HP - actualDamage);

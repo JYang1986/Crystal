@@ -68,7 +68,7 @@ namespace Client.LocalGame
             // GM模式：无限HP/MP
             if (_infiniteHP)
             {
-                int maxHP = _userObject.Stats[Shared.Data.Stat.HP];
+                int maxHP = _userObject.Stats[Stat.HP];
                 if (_userObject.HP < maxHP)
                 {
                     _userObject.HP = maxHP;
@@ -76,7 +76,7 @@ namespace Client.LocalGame
             }
             if (_infiniteMP)
             {
-                int maxMP = _userObject.Stats[Shared.Data.Stat.MP];
+                int maxMP = _userObject.Stats[Stat.MP];
                 if (_userObject.MP < maxMP)
                 {
                     _userObject.MP = maxMP;
@@ -142,30 +142,30 @@ namespace Client.LocalGame
         public int HP
         {
             get => _userObject.HP;
-            set => _userObject.HP = (ushort)Math.Min(_userObject.MaxHP, Math.Max(0, value));
+            set => _userObject.HP = (ushort)Math.Min(_userObject.Stats[Stat.HP], Math.Max(0, value));
         }
 
         public int MP
         {
             get => _userObject.MP;
-            set => _userObject.MP = (ushort)Math.Min(_userObject.MaxMP, Math.Max(0, value));
+            set => _userObject.MP = (ushort)Math.Min(_userObject.Stats[Stat.MP], Math.Max(0, value));
         }
 
-        public int MaxHP => _userObject.MaxHP;
-        public int MaxMP => _userObject.MaxMP;
+        public int MaxHP => _userObject.Stats[Stat.HP];
+        public int MaxMP => _userObject.Stats[Stat.MP];
 
-        public ushort MinAC => _userObject.MinAC;
-        public ushort MaxAC => _userObject.MaxAC;
-        public ushort MinMAC => _userObject.MinMAC;
-        public ushort MaxMAC => _userObject.MaxMAC;
-        public ushort MinDC => _userObject.MinDC;
-        public ushort MaxDC => _userObject.MaxDC;
-        public ushort MinMC => _userObject.MinMC;
-        public ushort MaxMC => _userObject.MaxMC;
-        public ushort MinSC => _userObject.MinSC;
-        public ushort MaxSC => _userObject.MaxSC;
-        public byte Accuracy => _userObject.Accuracy;
-        public byte Agility => _userObject.Agility;
+        public int MinAC => _userObject.Stats[Stat.MinAC];
+        public int MaxAC => _userObject.Stats[Stat.MaxAC];
+        public int MinMAC => _userObject.Stats[Stat.MinMAC];
+        public int MaxMAC => _userObject.Stats[Stat.MaxMAC];
+        public int MinDC => _userObject.Stats[Stat.MinDC];
+        public int MaxDC => _userObject.Stats[Stat.MaxDC];
+        public int MinMC => _userObject.Stats[Stat.MinMC];
+        public int MaxMC => _userObject.Stats[Stat.MaxMC];
+        public int MinSC => _userObject.Stats[Stat.MinSC];
+        public int MaxSC => _userObject.Stats[Stat.MaxSC];
+        public int Accuracy => _userObject.Stats[Stat.Accuracy];
+        public int Agility => _userObject.Stats[Stat.Agility];
 
         // UserObject没有这些属性，使用默认值
         public uint Gold { get; set; }

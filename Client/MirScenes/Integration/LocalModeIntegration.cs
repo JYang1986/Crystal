@@ -72,7 +72,7 @@ namespace Client.MirScenes.Integration
                     {
                         Name = save.Name,
                         Class = save.Class,
-                        Gender = save.Gender,
+                        Gender = (MirGender)save.Gender,
                         Level = save.Level,
                         LastAccess = save.SaveTime
                     };

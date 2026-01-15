@@ -134,20 +134,20 @@ namespace Client.LocalGame
             // 属性 - 通过 Stats 字典设置
             user.HP = (ushort)saveData.HP;
             user.MP = (ushort)saveData.MP;
-            user.Stats[Shared.Data.Stat.HP] = saveData.MaxHP;
-            user.Stats[Shared.Data.Stat.MP] = saveData.MaxMP;
-            user.Stats[Shared.Data.Stat.MinAC] = saveData.MinAC;
-            user.Stats[Shared.Data.Stat.MaxAC] = saveData.MaxAC;
-            user.Stats[Shared.Data.Stat.MinMAC] = saveData.MinMAC;
-            user.Stats[Shared.Data.Stat.MaxMAC] = saveData.MaxMAC;
-            user.Stats[Shared.Data.Stat.MinDC] = saveData.MinDC;
-            user.Stats[Shared.Data.Stat.MaxDC] = saveData.MaxDC;
-            user.Stats[Shared.Data.Stat.MinMC] = saveData.MinMC;
-            user.Stats[Shared.Data.Stat.MaxMC] = saveData.MaxMC;
-            user.Stats[Shared.Data.Stat.MinSC] = saveData.MinSC;
-            user.Stats[Shared.Data.Stat.MaxSC] = saveData.MaxSC;
-            user.Stats[Shared.Data.Stat.Accuracy] = saveData.Accuracy;
-            user.Stats[Shared.Data.Stat.Agility] = saveData.Agility;
+            user.Stats[Stat.HP] = saveData.MaxHP;
+            user.Stats[Stat.MP] = saveData.MaxMP;
+            user.Stats[Stat.MinAC] = saveData.MinAC;
+            user.Stats[Stat.MaxAC] = saveData.MaxAC;
+            user.Stats[Stat.MinMAC] = saveData.MinMAC;
+            user.Stats[Stat.MaxMAC] = saveData.MaxMAC;
+            user.Stats[Stat.MinDC] = saveData.MinDC;
+            user.Stats[Stat.MaxDC] = saveData.MaxDC;
+            user.Stats[Stat.MinMC] = saveData.MinMC;
+            user.Stats[Stat.MaxMC] = saveData.MaxMC;
+            user.Stats[Stat.MinSC] = saveData.MinSC;
+            user.Stats[Stat.MaxSC] = saveData.MaxSC;
+            user.Stats[Stat.Accuracy] = saveData.Accuracy;
+            user.Stats[Stat.Agility] = saveData.Agility;
 
             // 装备和物品
             // TODO: 加载装备和背包数据

@@ -247,7 +247,7 @@ namespace Client.MirScenes
                         bool success = LocalModeIntegration.CreateLocalCharacter(
                             _character.NameTextBox.Text,
                             _character.Class,
-                            _character.Gender
+                            (byte)_character.Gender
                         );
 
                         if (success)
@@ -262,7 +262,7 @@ namespace Client.MirScenes
                         }
                         else
                         {
-                            MirMessageBox.Show("创建角色失败", MirMessageBoxButtons.OK);
+                            MirMessageBox.Show("创建角色失败");
                         }
                     }
                     else
@@ -315,7 +315,7 @@ namespace Client.MirScenes
                 bool success = LocalModeIntegration.StartLocalGame(Characters[_selected].Name);
                 if (!success)
                 {
-                    MirMessageBox.Show("启动游戏失败", MirMessageBoxButtons.OK);
+                    MirMessageBox.Show("启动游戏失败");
                     StartGameButton.Enabled = true;
                 }
             }
@@ -437,7 +437,7 @@ namespace Client.MirScenes
                             }
                             else
                             {
-                                MirMessageBox.Show("删除角色失败", MirMessageBoxButtons.OK);
+                                MirMessageBox.Show("删除角色失败");
                             }
                             DeleteCharacterButton.Enabled = true;
                         }
