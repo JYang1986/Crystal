@@ -2,6 +2,7 @@
 using Client.MirGraphics;
 using Client.MirNetwork;
 using Client.MirScenes.Dialogs;
+using Client.MirScenes.Integration;
 using Client.MirSounds;
 using C = ClientPackets;
 using S = ServerPackets;
@@ -239,12 +240,41 @@ namespace Client.MirScenes
 
                 _character.OnCreateCharacter += (o, e) =>
                 {
-                    Network.Enqueue(new C.NewCharacter
+                    // 检查是否是本地模式
+                    if (LocalModeIntegration.IsLocalModeEnabled)
                     {
-                        Name = _character.NameTextBox.Text,
-                        Class = _character.Class,
-                        Gender = _character.Gender
-                    });
+                        // 本地模式：直接创建本地角色
+                        bool success = LocalModeIntegration.CreateLocalCharacter(
+                            _character.NameTextBox.Text,
+                            _character.Class,
+                            _character.Gender
+                        );
+
+                        if (success)
+                        {
+                            // 刷新角色列表
+                            var localCharacters = LocalModeIntegration.GetLocalCharacters();
+                            Characters.Clear();
+                            Characters.AddRange(localCharacters);
+                            SortList();
+                            _selected = 0;
+                            UpdateInterface();
+                        }
+                        else
+                        {
+                            MirMessageBox.Show("创建角色失败", MirMessageBoxButtons.OK);
+                        }
+                    }
+                    else
+                    {
+                        // 联机模式：发送到服务器
+                        Network.Enqueue(new C.NewCharacter
+                        {
+                            Name = _character.NameTextBox.Text,
+                            Class = _character.Class,
+                            Gender = _character.Gender
+                        });
+                    }
                 };
             }
 
@@ -278,10 +308,25 @@ namespace Client.MirScenes
             }
             StartGameButton.Enabled = false;
 
-            Network.Enqueue(new C.StartGame
+            // 检查是否是本地模式
+            if (LocalModeIntegration.IsLocalModeEnabled)
             {
-                CharacterIndex = Characters[_selected].Index
-            });
+                // 本地模式：直接启动本地游戏
+                bool success = LocalModeIntegration.StartLocalGame(Characters[_selected].Name);
+                if (!success)
+                {
+                    MirMessageBox.Show("启动游戏失败", MirMessageBoxButtons.OK);
+                    StartGameButton.Enabled = true;
+                }
+            }
+            else
+            {
+                // 联机模式：发送到服务器
+                Network.Enqueue(new C.StartGame
+                {
+                    CharacterIndex = Characters[_selected].Index
+                });
+            }
         }
 
         public override void Process()
@@ -366,18 +411,42 @@ namespace Client.MirScenes
 
             MirMessageBox message = new MirMessageBox(GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ConfirmDeleteCharacter), Characters[_selected].Name), MirMessageBoxButtons.YesNo);
             int index = Characters[_selected].Index;
+            string characterName = Characters[_selected].Name.ToString();
 
             message.YesButton.Click += (o1, e1) =>
             {
                 MirInputBox inputBox = new MirInputBox(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PleaseEnterCharacterName));
                 inputBox.OKButton.Click += (o, e) =>
                 {
-                    string name = Characters[_selected].Name.ToString();
-
-                    if (inputBox.InputTextBox.Text == name)
+                    if (inputBox.InputTextBox.Text == characterName)
                     {
-                        DeleteCharacterButton.Enabled = false;
-                        Network.Enqueue(new C.DeleteCharacter { CharacterIndex = index });
+                        // 检查是否是本地模式
+                        if (LocalModeIntegration.IsLocalModeEnabled)
+                        {
+                            // 本地模式：直接删除本地角色
+                            bool success = LocalModeIntegration.DeleteLocalCharacter(characterName);
+                            if (success)
+                            {
+                                // 刷新角色列表
+                                var localCharacters = LocalModeIntegration.GetLocalCharacters();
+                                Characters.Clear();
+                                Characters.AddRange(localCharacters);
+                                SortList();
+                                _selected = Math.Min(_selected, Characters.Count - 1);
+                                UpdateInterface();
+                            }
+                            else
+                            {
+                                MirMessageBox.Show("删除角色失败", MirMessageBoxButtons.OK);
+                            }
+                            DeleteCharacterButton.Enabled = true;
+                        }
+                        else
+                        {
+                            // 联机模式：发送到服务器
+                            DeleteCharacterButton.Enabled = false;
+                            Network.Enqueue(new C.DeleteCharacter { CharacterIndex = index });
+                        }
                     }
                     else
                     {

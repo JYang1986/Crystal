@@ -4,6 +4,7 @@ using Client.MirControls;
 using Client.MirGraphics;
 using Client.MirNetwork;
 using Client.MirSounds;
+using Client.MirScenes.Integration;
 using S = ServerPackets;
 using C = ClientPackets;
 
@@ -85,8 +86,23 @@ namespace Client.MirScenes
             _connectBox.CancelButton.Click += (o, e) => Program.Form.Close();
             Shown += (sender, args) =>
                 {
-                    Network.Connect();
-                    _connectBox.Show();
+                    // 检查是否启用本地模式
+                    if (LocalModeIntegration.IsLocalModeEnabled)
+                    {
+                        Console.WriteLine("[LoginScene] 检测到本地模式，初始化本地环境...");
+                        LocalModeIntegration.InitializeLocalMode();
+
+                        // 直接进入选角场景，跳过登录
+                        var localCharacters = LocalModeIntegration.GetLocalCharacters();
+                        Dispose();
+                        ActiveScene = new SelectScene(localCharacters);
+                    }
+                    else
+                    {
+                        // 正常联机模式
+                        Network.Connect();
+                        _connectBox.Show();
+                    }
                 };
         }
 

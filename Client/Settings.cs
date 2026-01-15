@@ -84,6 +84,9 @@ namespace Client
         public static int Port = 7000;
         public const int TimeOut = 5000;
 
+        //Local Game Mode
+        public static bool EnableLocalMode = false; // 是否启用本地单机模式
+
         //Sound
         public static int SoundOverLap = 3;
         private static byte _volume = 100;
@@ -225,6 +228,9 @@ namespace Client
                 IPAddress = Reader.ReadString("Network", "IPAddress", IPAddress);
                 Port = Reader.ReadInt32("Network", "Port", Port);
             }
+
+            //Local Game Mode
+            EnableLocalMode = Reader.ReadBoolean("LocalMode", "EnableLocalMode", EnableLocalMode);
 
             //Logs
             LogErrors = Reader.ReadBoolean("Logs", "LogErrors", LogErrors);
