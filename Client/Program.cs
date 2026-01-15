@@ -17,6 +17,10 @@ namespace Client
         [STAThread]
         private static void Main(string[] args)
         {
+            // 启用 BinaryFormatter (兼容 SlimDX)
+            AppContext.SetSwitch("System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization", true);
+            AppContext.SetSwitch("System.Runtime.Serialization.AllowProtectedBinaryFormatterSerialization", true);
+
             if (args.Length > 0)
             {
                 foreach (var arg in args)
