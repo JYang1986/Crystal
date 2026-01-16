@@ -174,9 +174,12 @@ namespace Client.LocalGame
                 }
 
                 // 创建地图控制器
+                string mapFileName = Path.Combine(Settings.MapPath, $"{saveData.CurrentMap}.map");
+                Console.WriteLine($"[LocalGame] 地图文件路径: {mapFileName}");
+
                 var mapControl = new MapControl
                 {
-                    FileName = $"{saveData.CurrentMap}.map",
+                    FileName = mapFileName,
                     Title = saveData.CurrentMap,
                     MiniMap = 0, // TODO: 从配置获取
                     BigMap = 0,

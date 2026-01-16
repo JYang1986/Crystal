@@ -1305,6 +1305,9 @@ namespace Client.MirObjects
 
                 if (this == User)
                 {
+                    // 本地模式：使用本地移动处理器
+                    bool isLocalMode = Settings.EnableLocalMode;
+
                     switch (CurrentAction)
                     {
                         case MirAction.DashFail:
@@ -1312,7 +1315,14 @@ namespace Client.MirObjects
                             break;
                         case MirAction.Standing:
                         case MirAction.MountStanding:
-                            Network.Enqueue(new C.Turn { Direction = Direction });
+                            if (isLocalMode)
+                            {
+                                Client.LocalGame.LocalMovementHandler.HandleTurn(User, Direction);
+                            }
+                            else
+                            {
+                                Network.Enqueue(new C.Turn { Direction = Direction });
+                            }
                             MapControl.NextAction = CMain.Time + 2500;
                             GameScene.CanRun = false;
                             break;
@@ -1320,7 +1330,14 @@ namespace Client.MirObjects
                         case MirAction.MountWalking:
                         case MirAction.Sneek:
                             GameScene.LastRunTime = CMain.Time;
-                            Network.Enqueue(new C.Walk { Direction = Direction });
+                            if (isLocalMode)
+                            {
+                                Client.LocalGame.LocalMovementHandler.HandleWalk(User, Direction);
+                            }
+                            else
+                            {
+                                Network.Enqueue(new C.Walk { Direction = Direction });
+                            }
                             GameScene.Scene.MapControl.FloorValid = false;
                             GameScene.CanRun = true;
                             MapControl.NextAction = CMain.Time + 2500;
@@ -1328,7 +1345,14 @@ namespace Client.MirObjects
                         case MirAction.Running:
                         case MirAction.MountRunning:
                             GameScene.LastRunTime = CMain.Time;
-                            Network.Enqueue(new C.Run { Direction = Direction });
+                            if (isLocalMode)
+                            {
+                                Client.LocalGame.LocalMovementHandler.HandleRun(User, Direction);
+                            }
+                            else
+                            {
+                                Network.Enqueue(new C.Run { Direction = Direction });
+                            }
                             GameScene.Scene.MapControl.FloorValid = false;
                             MapControl.NextAction = CMain.Time + (Sprint ? 1000 : 2500);
                             break;
