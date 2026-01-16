@@ -92,6 +92,36 @@ namespace Client
                 DXManager.Create();
                 SoundManager.Create();
                 CenterToScreen();
+
+                // 初始化场景 - 根据本地模式设置
+                if (MirScene.ActiveScene == null)
+                {
+                    if (Settings.EnableLocalMode)
+                    {
+                        Console.WriteLine("[CMain_Load] 检测到本地模式，直接进入角色选择");
+                        try
+                        {
+                            // 禁用网络自动重试
+                            Client.MirNetwork.Network.RetryTime = long.MaxValue;
+                            Client.MirNetwork.Network.ConnectAttempt = 0;
+
+                            Client.MirScenes.Integration.LocalModeIntegration.InitializeLocalMode();
+                            var localCharacters = Client.MirScenes.Integration.LocalModeIntegration.GetLocalCharacters();
+                            MirScene.ActiveScene = new Client.MirScenes.SelectScene(localCharacters);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[CMain_Load] 本地模式初始化失败: {ex.Message}");
+                            // 失败时创建 LoginScene
+                            MirScene.ActiveScene = new Client.MirScenes.LoginScene();
+                        }
+                    }
+                    else
+                    {
+                        // 正常模式：创建 LoginScene
+                        MirScene.ActiveScene = new Client.MirScenes.LoginScene();
+                    }
+                }
             }
             catch (Exception ex)
             {

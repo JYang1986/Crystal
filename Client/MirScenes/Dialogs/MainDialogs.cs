@@ -733,11 +733,35 @@ namespace Client.MirScenes.Dialogs
                             Settings.TargetDead = !Settings.TargetDead;
                         }
 
-                        Network.Enqueue(new C.Chat
+                        // 本地模式GM命令处理
+                        if (Settings.EnableLocalMode && (msg.StartsWith("/@") || msg.StartsWith("@")))
                         {
-                            Message = msg,
-                            LinkedItems = new List<ChatItem>(LinkedItems)
-                        });
+                            try
+                            {
+                                var localPlayer = Client.LocalGame.LocalGameStarter.GetLocalPlayer();
+                                if (localPlayer != null)
+                                {
+                                    localPlayer.HandleGMCommand(msg);
+                                }
+                                else
+                                {
+                                    ReceiveChat("[本地模式] 本地玩家对象未初始化", ChatType.System);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ReceiveChat($"[本地模式] GM命令执行失败: {ex.Message}", ChatType.System);
+                            }
+                        }
+                        else
+                        {
+                            // 正常聊天消息（联机模式或非GM命令）
+                            Network.Enqueue(new C.Chat
+                            {
+                                Message = msg,
+                                LinkedItems = new List<ChatItem>(LinkedItems)
+                            });
+                        }
 
                         if (ChatTextBox.Text[0] == '/')
                         {

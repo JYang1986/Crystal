@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using Client.MirObjects;
 using Client.MirScenes;
+using Client.MirScenes.Dialogs;
 using Client.MirControls;
 using S = ServerPackets;
 
@@ -228,6 +229,16 @@ namespace Client.LocalGame
                 // 设置初始金币
                 GameScene.Gold = 0; // TODO: 从存档加载
                 GameScene.Credit = 0;
+
+                // 创建 CharacterDialog（角色信息对话框）- 这是必需的
+                if (scene.CharacterDialog == null && GameScene.User != null)
+                {
+                    scene.CharacterDialog = new CharacterDialog(MirGridType.Equipment, GameScene.User)
+                    {
+                        Parent = scene,
+                        Visible = false
+                    };
+                }
 
                 // 刷新技能栏
                 foreach (var skillBar in scene.SkillBarDialogs)

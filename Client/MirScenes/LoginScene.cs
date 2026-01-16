@@ -88,8 +88,16 @@ namespace Client.MirScenes
                 {
                     try
                     {
-                        // 检查是否启用本地模式
-                        if (LocalModeIntegration.IsLocalModeEnabled)
+                        // 临时硬编码：强制启用本地模式
+                        bool forceLocalMode = true;
+
+                        Console.WriteLine($"[LoginScene] 检查本地模式状态...");
+                        Console.WriteLine($"[LoginScene] Settings.EnableLocalMode = {Settings.EnableLocalMode}");
+                        Console.WriteLine($"[LoginScene] LocalModeIntegration.IsLocalModeEnabled = {LocalModeIntegration.IsLocalModeEnabled}");
+                        Console.WriteLine($"[LoginScene] 强制本地模式 = {forceLocalMode}");
+
+                        // 检查是否启用本地模式（强制模式或配置启用）
+                        if (forceLocalMode || LocalModeIntegration.IsLocalModeEnabled)
                         {
                             Console.WriteLine("[LoginScene] 检测到本地模式，初始化本地环境...");
                             LocalModeIntegration.InitializeLocalMode();
@@ -101,6 +109,7 @@ namespace Client.MirScenes
                         }
                         else
                         {
+                            Console.WriteLine("[LoginScene] 使用联机模式，连接服务器...");
                             // 正常联机模式
                             Network.Connect();
                             _connectBox.Show();

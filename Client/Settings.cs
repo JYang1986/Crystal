@@ -230,7 +230,15 @@ namespace Client
             }
 
             //Local Game Mode
-            EnableLocalMode = Reader.ReadBoolean("LocalMode", "EnableLocalMode", EnableLocalMode);
+            // 读取前先检查配置文件内容
+            Console.WriteLine($"[Settings] 配置文件: {(Settings.UseTestConfig ? "Mir2Test.ini" : "Mir2Config.ini")}");
+
+            // 临时硬编码测试
+            EnableLocalMode = true;
+            Console.WriteLine($"[Settings.Load] 硬编码 EnableLocalMode = {EnableLocalMode}");
+
+            //EnableLocalMode = Reader.ReadBoolean("LocalMode", "EnableLocalMode", EnableLocalMode);
+            //Console.WriteLine($"[Settings.Load] EnableLocalMode = {EnableLocalMode}");
 
             //Logs
             LogErrors = Reader.ReadBoolean("Logs", "LogErrors", LogErrors);
@@ -405,6 +413,9 @@ namespace Client
             Reader.Write("Filter", "FilterMentorChat", FilterMentorChat);
             Reader.Write("Filter", "FilterGroupChat", FilterGroupChat);
             Reader.Write("Filter", "FilterGuildChat", FilterGuildChat);
+
+            //Local Game Mode
+            Reader.Write("LocalMode", "EnableLocalMode", EnableLocalMode);
 
             //AutoPatcher
             Reader.Write("Launcher", "Enabled", P_Patcher);

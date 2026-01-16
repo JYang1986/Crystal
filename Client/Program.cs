@@ -42,16 +42,31 @@ namespace Client
                 Packet.IsServer = false;
                 Settings.Load();
 
+                // 调试：检查本地模式配置
+                Console.WriteLine($"[Program] UseTestConfig: {Settings.UseTestConfig}");
+                Console.WriteLine($"[Program] EnableLocalMode: {Settings.EnableLocalMode}");
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 CheckResolutionSetting();
 
                 Launch = false;
-                if (Settings.P_Patcher)
-                    Application.Run(PForm = new AMain());
-                else
+
+                // 本地模式直接跳过启动器
+                if (Settings.EnableLocalMode)
+                {
+                    Console.WriteLine("[Program] 本地模式：跳过启动器，直接启动游戏");
                     Launch = true;
+                }
+                else if (Settings.P_Patcher)
+                {
+                    Application.Run(PForm = new AMain());
+                }
+                else
+                {
+                    Launch = true;
+                }
 
                 if (Launch)
                     Application.Run(Form = new CMain());
