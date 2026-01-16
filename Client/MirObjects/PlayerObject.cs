@@ -1373,7 +1373,14 @@ namespace Client.MirObjects
                             //CanSetAction = false;
                             break;
                         case MirAction.Mine:
-                            Network.Enqueue(new C.Attack { Direction = Direction, Spell = Spell.None });
+                            if (isLocalMode)
+                            {
+                                Client.LocalGame.LocalCombatHandler.HandleAttack(User, Direction, Spell.None);
+                            }
+                            else
+                            {
+                                Network.Enqueue(new C.Attack { Direction = Direction, Spell = Spell.None });
+                            }
                             GameScene.AttackTime = CMain.Time + (1400 - Math.Min(370, (User.Level * 14)));
                             MapControl.NextAction = CMain.Time + 2500;
                             break;
@@ -1437,7 +1444,14 @@ namespace Client.MirObjects
                                 }
                             }
 
-                            Network.Enqueue(new C.Attack { Direction = Direction, Spell = Spell });
+                            if (isLocalMode)
+                            {
+                                Client.LocalGame.LocalCombatHandler.HandleAttack(User, Direction, Spell);
+                            }
+                            else
+                            {
+                                Network.Enqueue(new C.Attack { Direction = Direction, Spell = Spell });
+                            }
 
                             if (Spell == Spell.Slaying)
                                 GameScene.User.Slaying = false;
@@ -1471,7 +1485,14 @@ namespace Client.MirObjects
                                 uint targetID = (uint)action.Params[0];
                                 Point location = (Point)action.Params[1];
 
-                                Network.Enqueue(new C.RangeAttack { Direction = Direction, Location = CurrentLocation, TargetID = targetID, TargetLocation = location });
+                                if (isLocalMode)
+                                {
+                                    Client.LocalGame.LocalCombatHandler.HandleRangeAttack(User, Direction, location, targetID);
+                                }
+                                else
+                                {
+                                    Network.Enqueue(new C.RangeAttack { Direction = Direction, Location = CurrentLocation, TargetID = targetID, TargetLocation = location });
+                                }
                             }
                             break;
                         case MirAction.AttackRange2:
